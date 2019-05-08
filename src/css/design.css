@@ -1,0 +1,10 @@
+.form-group.has-error .with-error {
+    display: block;
+    color: #d50000;
+    font-size: 13px;
+    padding: 5px 0 0 0;
+}
+
+.form-group .with-error {
+    display: none
+}

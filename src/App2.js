@@ -28,7 +28,7 @@
 //             ++idToBeAdded;
 //         }
 //
-//         axios.post("http://localhost:3001/api/putNotification", {
+//         axios.post("http://localhost:3002/api/putNotification", {
 //             id: idToBeAdded,
 //             message: message
 //         });

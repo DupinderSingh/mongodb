@@ -4,8 +4,9 @@ var cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const Data = require("./data");
+const AddLocationData = require("./add-location");
 
-const API_PORT = 3001;
+const API_PORT = 3002;
 const app = express();
 app.use(cors());
 const router = express.Router();
@@ -37,6 +38,13 @@ app.use(logger("dev"));
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
     Data.find((err, data) => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true, data: data });
+    });
+});
+
+router.get("/getAddress", (req, res) => {
+    AddLocationData.find((err, data) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: data });
     });
@@ -91,28 +99,26 @@ router.post("/putData", (req, res) => {
     });
 });
 
+router.post("/addAddress", (req, res) => {
+    let data = new AddLocationData();
 
-// router.post("/putNotification", (req, res) => {
-//     let data = new Data();
-//
-//     const { id, message } = req.body;
-//
-//     if ((!id && id !== 0) || !message) {
-//         return res.json({
-//             success: false,
-//             error: "INVALID INPUTS"
-//         });
-//     }
-//     data.message = message;
-//     data.id = id;
-//     data.save(err => {
-//         if (err) return res.json({ success: false, error: err, message: "" });
-//         return res.json({ success: true, message });
-//     });
-// });
+    const { address, long, lat } = req.body;
+    console.log(address, "address", long, "longitude", lat, "latitude..........callng from routeeee..........................................")
+    data.address = address;
+    data.long = long;
+    data.lat = lat;
+    data.save(err => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true });
+    });
+});
 
 // append /api for our http requests
 app.use("/api", router);
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+
+
+
+
